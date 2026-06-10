@@ -1,0 +1,37 @@
+from datetime import datetime
+from validation import validate_task_title, validate_task_description, validate_due_date
+
+tasks = []
+
+def add_task(title, description, due_date):
+    validate_task_title(title)
+    validate_task_description(description)
+    validate_due_date(due_date)
+    task = {
+        "title": title,
+        "description": description,
+        "due_date": due_date,
+        "status": "pending"
+    }
+    tasks.append(task)
+    print("Task added successfully!")
+
+def mark_task_as_complete(index, tasks=tasks):
+    tasks[index]["status"] = "complete"
+    print("Task marked as complete!")
+
+def view_pending_tasks(tasks=tasks):
+    pending = [t for t in tasks if t["status"] == "pending"]
+    if not pending:
+        print("No pending tasks!")
+    else:
+        for i, task in enumerate(pending):
+            print(f"{i + 1}. {task['title']} - {task['description']} - Due: {task['due_date']}")
+
+def calculate_progress(tasks=tasks):
+    if len(tasks) == 0:
+        progress = 0
+    else:
+        completed = len([t for t in tasks if t["status"] == "complete"])
+        progress = (completed / len(tasks)) * 100
+    return progress
